@@ -25,7 +25,7 @@
       </li>
       <li><div class="dropdown-divider"></div></li>
       {% if site_url %}
-      <li>
+      <!-- <li>
         <a class="dropdown-item" href="{{ site_url }}">
           <i class="ri-external-link-line me-2"></i>
           <span class="align-middle">View site</span>
@@ -38,7 +38,7 @@
           <i class="ri-lock-password-line me-2"></i>
           <span class="align-middle">Change password</span>
         </a>
-      </li>
+      </li> -->
       {% endif %}
       <li><div class="dropdown-divider"></div></li>
       <li>
@@ -135,6 +135,8 @@
 {% block extrabody %}
 {{ block.super }}
 {% if not is_popup %}
+<script src="{% static 'materialize/vendor/libs/popper/popper.js' %}"></script>
+<script src="{% static 'materialize/vendor/js/bootstrap.js' %}"></script>
 <script>
 document.addEventListener('click', function (event) {
   if (event.target.closest('.layout-menu-toggle')) {
