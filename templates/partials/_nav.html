@@ -1,0 +1,102 @@
+{% load app_urls %}
+<ul class="menu-inner py-1">
+  {% if request.user.is_superuser %}
+  <li class="{% is_active_nav 'schools:super_dashboard' %}">
+    <a href="{% url 'schools:super_dashboard' %}" class="menu-link">
+      <i class="menu-icon ri-dashboard-line"></i>
+      <div>Dashboard</div>
+    </a>
+  </li>
+
+  <li class="menu-header small text-uppercase"><span class="menu-header-text">Platform</span></li>
+  <li class="{% is_active_nav 'schools:school_list' %}">
+    <a href="{% url 'schools:school_list' %}" class="menu-link">
+      <i class="menu-icon ri-building-4-line"></i>
+      <div>Schools</div>
+    </a>
+  </li>
+  {% else %}
+  <li class="{% is_active_nav 'schools:dashboard' %}">
+    <a href="{% url 'schools:dashboard' %}" class="menu-link">
+      <i class="menu-icon ri-dashboard-line"></i>
+      <div>Dashboard</div>
+    </a>
+  </li>
+
+  {% if perms_ctx.can_manage_academics %}
+  <li class="menu-header small text-uppercase"><span class="menu-header-text">Academics</span></li>
+  <li class="{% is_active_nav 'academics:academic_year_list' %}">
+    <a href="{% url 'academics:academic_year_list' %}" class="menu-link">
+      <i class="menu-icon ri-calendar-2-line"></i>
+      <div>Academic Years</div>
+    </a>
+  </li>
+  <li class="{% is_active_nav 'academics:class_level_list' %}">
+    <a href="{% url 'academics:class_level_list' %}" class="menu-link">
+      <i class="menu-icon ri-book-open-line"></i>
+      <div>Classes</div>
+    </a>
+  </li>
+  <li class="{% is_active_nav 'academics:section_list' %}">
+    <a href="{% url 'academics:section_list' %}" class="menu-link">
+      <i class="menu-icon ri-layout-grid-line"></i>
+      <div>Sections</div>
+    </a>
+  </li>
+  <li class="{% is_active_nav 'academics:stream_list' %}">
+    <a href="{% url 'academics:stream_list' %}" class="menu-link">
+      <i class="menu-icon ri-git-branch-line"></i>
+      <div>Streams</div>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if perms_ctx.can_manage_students or perms_ctx.can_manage_staff or perms_ctx.can_manage_users %}
+  <li class="menu-header small text-uppercase"><span class="menu-header-text">People</span></li>
+  {% endif %}
+  {% if perms_ctx.can_manage_students %}
+  <li class="{% is_active_nav 'students:student_list' %}">
+    <a href="{% url 'students:student_list' %}" class="menu-link">
+      <i class="menu-icon ri-graduation-cap-line"></i>
+      <div>Students</div>
+    </a>
+  </li>
+  {% endif %}
+  {% if perms_ctx.can_manage_staff %}
+  <li class="{% is_active_nav 'staff:staff_list' %}">
+    <a href="{% url 'staff:staff_list' %}" class="menu-link">
+      <i class="menu-icon ri-team-line"></i>
+      <div>Staff</div>
+    </a>
+  </li>
+  {% endif %}
+  {% if perms_ctx.can_manage_users %}
+  <li class="{% is_active_nav 'accounts:user_list' %}">
+    <a href="{% url 'accounts:user_list' %}" class="menu-link">
+      <i class="menu-icon ri-user-settings-line"></i>
+      <div>User Accounts</div>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if perms_ctx.can_manage_school_profile or perms_ctx.can_view_audit_log %}
+  <li class="menu-header small text-uppercase"><span class="menu-header-text">School</span></li>
+  {% endif %}
+  {% if perms_ctx.can_manage_school_profile %}
+  <li class="{% is_active_nav 'schools:profile' %}">
+    <a href="{% url 'schools:profile' %}" class="menu-link">
+      <i class="menu-icon ri-building-line"></i>
+      <div>School Profile</div>
+    </a>
+  </li>
+  {% endif %}
+  {% if perms_ctx.can_view_audit_log %}
+  <li class="{% is_active_nav 'audit:audit_log_list' %}">
+    <a href="{% url 'audit:audit_log_list' %}" class="menu-link">
+      <i class="menu-icon ri-history-line"></i>
+      <div>Audit Log</div>
+    </a>
+  </li>
+  {% endif %}
+  {% endif %}
+</ul>

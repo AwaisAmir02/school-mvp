@@ -1,0 +1,38 @@
+<div class="table-responsive text-nowrap">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Admission #</th>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Section</th>
+        <th>Academic Year</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for student in students %}
+      <tr>
+        <td>{{ student.admission_number }}</td>
+        <td>{{ student.full_name }}</td>
+        <td>{{ student.class_level.name }}</td>
+        <td>{{ student.section.name|default:"—" }}</td>
+        <td>{{ student.academic_year.name }}</td>
+        <td class="text-end">
+          <button type="button" hx-get="{% url 'students:student_update' student.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+                  class="btn btn-icon btn-text-secondary rounded-pill">
+            <i class="ri-pencil-line ri-20px"></i>
+          </button>
+          <button type="button" hx-delete="{% url 'students:student_delete' student.pk %}" hx-confirm="Remove this student?"
+                  hx-target="body" hx-swap="none" class="btn btn-icon btn-text-danger rounded-pill">
+            <i class="ri-delete-bin-7-line ri-20px"></i>
+          </button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No students yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "partials/_pagination.html" %}

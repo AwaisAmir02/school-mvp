@@ -1,0 +1,34 @@
+<div class="table-responsive text-nowrap">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for user in users %}
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.get_full_name|default:"—" }}</td>
+        <td>{{ user.get_role_display }}</td>
+        <td>
+          {% if user.is_active %}<span class="badge rounded-pill bg-label-success">Active</span>{% else %}<span class="badge rounded-pill bg-label-secondary">Inactive</span>{% endif %}
+        </td>
+        <td class="text-end">
+          <button type="button" hx-get="{% url 'accounts:user_edit' user.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+                  class="btn btn-icon btn-text-secondary rounded-pill">
+            <i class="ri-pencil-line ri-20px"></i>
+          </button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No user accounts yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "partials/_pagination.html" %}

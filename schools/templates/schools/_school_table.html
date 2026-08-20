@@ -1,0 +1,52 @@
+<div class="table-responsive text-nowrap">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Contact</th>
+        <th>Users</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for school in schools %}
+      <tr>
+        <td>{{ school.name }}</td>
+        <td>{{ school.code }}</td>
+        <td>{{ school.contact_email|default:"—" }}</td>
+        <td>{{ school.user_count }}</td>
+        <td>
+          {% if school.is_active %}<span class="badge rounded-pill bg-label-success">Active</span>{% else %}<span class="badge rounded-pill bg-label-secondary">Inactive</span>{% endif %}
+        </td>
+        <td class="text-end">
+          <div class="dropdown">
+            <button type="button" class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+              <i class="ri-more-2-line ri-20px"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="javascript:void(0);" hx-get="{% url 'schools:school_update' school.pk %}" hx-target="#modal-root" hx-swap="innerHTML">
+                <i class="ri-pencil-line me-1"></i> Edit
+              </a>
+              <a class="dropdown-item" href="javascript:void(0);"
+                 hx-post="{% url 'schools:school_toggle_active' school.pk %}"
+                 hx-confirm="{% if school.is_active %}Deactivate{% else %}Activate{% endif %} {{ school.name }}?"
+                 hx-target="body" hx-swap="none">
+                {% if school.is_active %}
+                <i class="ri-forbid-line me-1"></i> Deactivate
+                {% else %}
+                <i class="ri-checkbox-circle-line me-1"></i> Activate
+                {% endif %}
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No schools yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "partials/_pagination.html" %}

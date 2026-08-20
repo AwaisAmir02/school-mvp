@@ -1,0 +1,125 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="light" data-assets-path="{% static 'materialize/' %}" data-template="vertical-menu-light-style">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dashboard{% endblock %} · School MVP</title>
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <link rel="icon" href="{% static 'icons/icon-192.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+  <meta name="theme-color" content="#666cff">
+
+  <link rel="stylesheet" href="{% static 'materialize/vendor/fonts/remixicon/remixicon.css' %}">
+  <link rel="stylesheet" href="{% static 'materialize/vendor/css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'materialize/vendor/css/theme-default.css' %}">
+  <link rel="stylesheet" href="{% static 'materialize/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}">
+  <link rel="stylesheet" href="{% static 'materialize/vendor/libs/node-waves/node-waves.css' %}">
+
+  <script src="{% static 'materialize/vendor/js/helpers.js' %}"></script>
+  <script src="{% static 'materialize/js/config.js' %}"></script>
+
+  <script src="{% static 'vendor/htmx.min.js' %}" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a href="{% url 'schools:dashboard' %}" class="app-brand-link">
+            <span class="app-brand-text demo menu-text fw-semibold ms-2">School MVP</span>
+          </a>
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="ri-radio-button-line d-none"></i>
+            <i class="ri-arrow-left-s-line"></i>
+          </a>
+        </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        {% include "partials/_nav.html" %}
+      </aside>
+
+      <div class="layout-page">
+        <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0">
+            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+              <i class="ri-menu-fill ri-22px"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <h5 class="mb-0 me-auto">{% block page_title %}{% endblock %}</h5>
+
+            {% if request.user.is_authenticated %}
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+              <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <div class="avatar avatar-online">
+                    <span class="avatar-initial rounded-circle bg-label-primary">{{ request.user.username|slice:":1"|upper }}</span>
+                  </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);">
+                      <div class="d-flex">
+                        <div class="flex-grow-1">
+                          <span class="fw-medium d-block">{{ request.user.get_full_name|default:request.user.username }}</span>
+                          <small class="text-muted">{{ request.user.get_role_display }}</small>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li><div class="dropdown-divider"></div></li>
+                  <li>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="d-grid px-4 pt-2 pb-1">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger d-flex">
+                        <small class="align-middle">Logout</small>
+                        <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            {% endif %}
+          </div>
+        </nav>
+
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
+            {% include "partials/_messages.html" %}
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+
+        <div class="content-backdrop fade"></div>
+      </div>
+
+      <div class="layout-overlay layout-menu-toggle"></div>
+      <div class="drag-target"></div>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+
+  <script src="{% static 'materialize/vendor/libs/jquery/jquery.js' %}"></script>
+  <script src="{% static 'materialize/vendor/libs/popper/popper.js' %}"></script>
+  <script src="{% static 'materialize/vendor/js/bootstrap.js' %}"></script>
+  <script src="{% static 'materialize/vendor/libs/node-waves/node-waves.js' %}"></script>
+  <script src="{% static 'materialize/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+  <script src="{% static 'materialize/vendor/libs/hammer/hammer.js' %}"></script>
+  <script src="{% static 'materialize/vendor/js/menu.js' %}"></script>
+  <script src="{% static 'materialize/js/main.js' %}"></script>
+  <script src="{% static 'materialize/js/app-htmx.js' %}"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    }
+  </script>
+  {% block page_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,77 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'materialize/vendor/css/pages/page-auth.css' %}">
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="authentication-wrapper authentication-basic px-4">
+  <div class="authentication-inner py-6 mx-auto">
+    <div class="card px-sm-6 px-0">
+      <div class="card-body">
+        <div class="app-brand justify-content-center mt-2 mb-4">
+          <a href="{% url 'admin:index' %}" class="app-brand-link gap-2">
+            <span class="app-brand-text demo text-heading fw-bold">{{ site_header|default:_('Django administration') }}</span>
+          </a>
+        </div>
+
+        {% if form.errors and not form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <div class="alert alert-warning" role="alert">
+          {% blocktranslate trimmed %}
+            You are authenticated as {{ username }}, but are not authorized to
+            access this page. Would you like to login to a different account?
+          {% endblocktranslate %}
+        </div>
+        {% endif %}
+
+        <form action="{{ app_path }}" method="post" id="login-form">
+          {% csrf_token %}
+          <div class="mb-4">
+            {{ form.username.errors }}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+          </div>
+          <div class="mb-4">
+            {{ form.password.errors }}
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}">
+          </div>
+          {% url 'admin_password_reset' as password_reset_url %}
+          {% if password_reset_url %}
+          <div class="mb-4">
+            <a href="{{ password_reset_url }}">{% translate 'Forgotten your login credentials?' %}</a>
+          </div>
+          {% endif %}
+          <button type="submit" class="btn btn-primary d-grid w-100">{% translate 'Log in' %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

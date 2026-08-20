@@ -1,0 +1,38 @@
+<div class="table-responsive text-nowrap">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for academic_year in academic_years %}
+      <tr>
+        <td>{{ academic_year.name }}</td>
+        <td>{{ academic_year.start_date }}</td>
+        <td>{{ academic_year.end_date }}</td>
+        <td>
+          {% if academic_year.is_current %}<span class="badge rounded-pill bg-label-success">Current</span>{% endif %}
+        </td>
+        <td class="text-end">
+          <button type="button" hx-get="{% url 'academics:academic_year_update' academic_year.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+                  class="btn btn-icon btn-text-secondary rounded-pill">
+            <i class="ri-pencil-line ri-20px"></i>
+          </button>
+          <button type="button" hx-delete="{% url 'academics:academic_year_delete' academic_year.pk %}" hx-confirm="Delete this academic year?"
+                  hx-target="body" hx-swap="none" class="btn btn-icon btn-text-danger rounded-pill">
+            <i class="ri-delete-bin-7-line ri-20px"></i>
+          </button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No academic years yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "partials/_pagination.html" %}

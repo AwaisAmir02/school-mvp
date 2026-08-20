@@ -1,0 +1,146 @@
+{% extends "admin/base.html" %}
+{% load static admin_nav %}
+
+{% block dark-mode-vars %}{% endblock %}
+
+{% block usertools %}
+{% if has_permission %}
+<ul class="navbar-nav flex-row align-items-center ms-auto">
+  <li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+      <div class="avatar avatar-online">
+        <span class="avatar-initial rounded-circle bg-label-primary">{{ request.user.username|slice:":1"|upper }}</span>
+      </div>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <a class="dropdown-item" href="javascript:void(0);">
+          <div class="d-flex">
+            <div class="flex-grow-1">
+              <span class="fw-medium d-block">{{ request.user.get_full_name|default:request.user.get_username }}</span>
+              <small class="text-muted">{{ request.user.get_role_display }}</small>
+            </div>
+          </div>
+        </a>
+      </li>
+      <li><div class="dropdown-divider"></div></li>
+      {% if site_url %}
+      <li>
+        <a class="dropdown-item" href="{{ site_url }}">
+          <i class="ri-external-link-line me-2"></i>
+          <span class="align-middle">View site</span>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.has_usable_password %}
+      <li>
+        <a class="dropdown-item" href="{% url 'admin:password_change' %}">
+          <i class="ri-lock-password-line me-2"></i>
+          <span class="align-middle">Change password</span>
+        </a>
+      </li>
+      {% endif %}
+      <li><div class="dropdown-divider"></div></li>
+      <li>
+        <form method="post" action="{% url 'admin:logout' %}" class="d-grid px-4 pt-2 pb-1">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger d-flex">
+            <small class="align-middle">Logout</small>
+            <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
+          </button>
+        </form>
+      </li>
+    </ul>
+  </li>
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'materialize/vendor/fonts/remixicon/remixicon.css' %}">
+<link rel="stylesheet" href="{% static 'materialize/vendor/css/core.css' %}">
+<link rel="stylesheet" href="{% static 'materialize/vendor/css/theme-default.css' %}">
+<link rel="stylesheet" href="{% static 'admin_custom.css' %}">
+{% endblock %}
+
+{% block header %}
+{% if not is_popup %}
+<div class="layout-wrapper layout-content-navbar layout-menu-fixed">
+  <div class="layout-container">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <div class="app-brand demo">
+        <a href="{% url 'admin:index' %}" class="app-brand-link">
+          <span class="app-brand-text demo menu-text fw-semibold ms-2">School MVP</span>
+        </a>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto" id="admin-menu-toggle">
+          <i class="ri-arrow-left-s-line"></i>
+        </a>
+      </div>
+      <div class="menu-inner-shadow"></div>
+      <ul class="menu-inner py-1">
+        {% for app in available_apps %}
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">{{ app.name }}</span></li>
+        {% for model in app.models %}
+        {% if model.admin_url %}
+        <li class="menu-item{% if request.path == model.admin_url %} active{% endif %}">
+          <a href="{{ model.admin_url }}" class="menu-link">
+            <i class="menu-icon {{ app.app_label|admin_app_icon }}"></i>
+            <div>{{ model.name }}</div>
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        {% url 'schools:school_list' as school_list_url %}
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Materialize UI</span></li>
+        <li class="menu-item{% if request.path == school_list_url %} active{% endif %}">
+          <a href="{{ school_list_url }}" class="menu-link">
+            <i class="menu-icon ri-building-4-line"></i>
+            <div>School Management</div>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="layout-page">
+      <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0">
+          <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)" id="admin-mobile-menu-toggle">
+            <i class="ri-menu-fill ri-22px"></i>
+          </a>
+        </div>
+        <div class="navbar-nav-right d-flex align-items-center ms-auto" id="admin-header-tools">
+          {{ block.super }}
+        </div>
+      </nav>
+
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% if not is_popup %}
+        </div>
+      </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extrabody %}
+{{ block.super }}
+{% if not is_popup %}
+<script>
+document.addEventListener('click', function (event) {
+  if (event.target.closest('.layout-menu-toggle')) {
+    document.documentElement.classList.toggle('layout-menu-collapsed');
+  }
+});
+</script>
+{% endif %}
+{% endblock %}

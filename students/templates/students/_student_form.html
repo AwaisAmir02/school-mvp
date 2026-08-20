@@ -1,0 +1,9 @@
+{% extends "partials/_modal_base.html" %}
+{% block modal_title %}{% if object %}Edit Student{% else %}Add Student{% endif %}{% endblock %}
+{% block modal_body %}
+<form hx-post="{{ request.path }}" hx-target="#modal-root" hx-swap="innerHTML">
+  {% csrf_token %}
+  {% include "partials/_form_fields.html" %}
+  {% include "partials/_modal_form_actions.html" %}
+</form>
+{% endblock %}

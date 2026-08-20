@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Academic Years{% endblock %}
+{% block page_title %}Academic Years{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <h5 class="card-title mb-0">Academic Years</h5>
+    <button type="button" hx-get="{% url 'academics:academic_year_create' %}" hx-target="#modal-root" hx-swap="innerHTML"
+            class="btn btn-primary btn-sm">
+      <i class="ri-add-line me-1"></i>Add academic year
+    </button>
+  </div>
+  <div id="object-list-container" hx-get="{{ request.path }}" hx-trigger="refresh-list from:body" hx-swap="innerHTML">
+    {% include "academics/_academic_year_table.html" %}
+  </div>
+</div>
+{% endblock %}

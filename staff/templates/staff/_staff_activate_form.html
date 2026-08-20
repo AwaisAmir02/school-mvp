@@ -1,0 +1,10 @@
+{% extends "partials/_modal_base.html" %}
+{% block modal_title %}Activate {{ staff_member.full_name }}{% endblock %}
+{% block modal_body %}
+<p class="mb-4 text-muted">Create login credentials for this staff member. They will be able to log in as a {{ staff_member.get_role_display }}.</p>
+<form hx-post="{{ request.path }}" hx-target="#modal-root" hx-swap="innerHTML">
+  {% csrf_token %}
+  {% include "partials/_form_fields.html" %}
+  {% include "partials/_modal_form_actions.html" %}
+</form>
+{% endblock %}

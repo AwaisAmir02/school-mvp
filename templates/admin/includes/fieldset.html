@@ -1,0 +1,43 @@
+<fieldset class="mb-4{% if not forloop.first %} pt-4 border-top{% endif %} {{ fieldset.classes }}"{% if fieldset.name %} aria-labelledby="{{ prefix }}-{{ id_prefix}}-{{ id_suffix }}-heading"{% endif %}>
+    {% if fieldset.name %}
+        {% if fieldset.is_collapsible %}<details><summary>{% endif %}
+        <div id="{{ prefix }}-{{ id_prefix}}-{{ id_suffix }}-heading" class="h6 mb-3">{{ fieldset.name }}</div>
+        {% if fieldset.is_collapsible %}</summary>{% endif %}
+    {% endif %}
+    {% if fieldset.description %}
+        <div class="form-text mb-3">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length > 1 %}<div class="row g-3">{% endif %}
+            {% for field in line %}
+                <div{% if line.fields|length > 1 %} class="col"{% endif %}>
+                    {% if field.is_checkbox %}
+                    <div class="form-check mb-3{% if field.field.is_hidden %} hidden{% endif %}">
+                        {{ field.field }}{{ field.label_tag }}
+                    </div>
+                    {% else %}
+                    <div class="mb-3{% if field.field.is_hidden %} hidden{% endif %}">
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="form-control-plaintext readonly">{{ field.contents }}</div>
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if not field.is_readonly %}
+                        {% for error in field.field.errors %}<div class="text-danger small mt-n2 mb-3">{{ error }}</div>{% endfor %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <div class="form-text{% if field.field.is_hidden %} hidden{% endif %}"{% if field.field.id_for_label %} id="{{ field.field.id_for_label }}_helptext"{% endif %}>
+                            {{ field.field.help_text|safe }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if line.fields|length > 1 %}</div>{% endif %}
+        </div>
+    {% endfor %}
+    {% if fieldset.name and fieldset.is_collapsible %}</details>{% endif %}
+</fieldset>

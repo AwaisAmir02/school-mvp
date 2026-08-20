@@ -1,0 +1,7 @@
+{
+  "name": "school-mvp",
+  "private": true,
+  "dependencies": {
+    "htmx.org": "^1.9.12"
+  }
+}

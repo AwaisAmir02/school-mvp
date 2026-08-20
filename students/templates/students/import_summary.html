@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Import Summary{% endblock %}
+{% block page_title %}Import Summary{% endblock %}
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-uppercase small text-muted mb-1">Rows Processed</p>
+        <h5 class="mb-0">{{ summary.total_rows }}</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-uppercase small text-muted mb-1">Created</p>
+        <h5 class="mb-0 text-success">{{ summary.created_count }}</h5>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-uppercase small text-muted mb-1">Errors</p>
+        <h5 class="mb-0 text-danger">{{ summary.error_count }}</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if summary.row_results %}
+<div class="card mb-6">
+  <div class="table-responsive text-nowrap">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Row</th>
+          <th>Admission #</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for result in summary.row_results %}
+        <tr>
+          <td>{{ result.row_number }}</td>
+          <td>{{ result.admission_number|default:"—" }}</td>
+          <td>
+            {% if result.status == 'created' %}<span class="badge rounded-pill bg-label-success">Created</span>{% else %}<span class="badge rounded-pill bg-label-danger">Error</span>{% endif %}
+          </td>
+          <td>
+            {% for error in result.errors %}<div>{{ error }}</div>{% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<a href="{% url 'students:student_list' %}" class="btn btn-outline-secondary">Back to Students</a>
+{% endblock %}

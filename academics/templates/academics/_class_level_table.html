@@ -1,0 +1,32 @@
+<div class="table-responsive text-nowrap">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Order</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      {% for class_level in class_levels %}
+      <tr>
+        <td>{{ class_level.name }}</td>
+        <td>{{ class_level.order }}</td>
+        <td class="text-end">
+          <button type="button" hx-get="{% url 'academics:class_level_update' class_level.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+                  class="btn btn-icon btn-text-secondary rounded-pill">
+            <i class="ri-pencil-line ri-20px"></i>
+          </button>
+          <button type="button" hx-delete="{% url 'academics:class_level_delete' class_level.pk %}" hx-confirm="Delete this class?"
+                  hx-target="body" hx-swap="none" class="btn btn-icon btn-text-danger rounded-pill">
+            <i class="ri-delete-bin-7-line ri-20px"></i>
+          </button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3" class="text-center text-muted py-4">No classes yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "partials/_pagination.html" %}

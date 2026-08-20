@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<p class="text-muted mb-4">{{ school.name }}</p>
+
+<div class="row g-6 mb-6">
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-primary rounded-3">
+              <i class="ri-graduation-cap-line ri-24px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info mt-5">
+          <h5 class="mb-1">{{ student_count }}</h5>
+          <p class="mb-0">Students</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-success rounded-3">
+              <i class="ri-team-line ri-24px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info mt-5">
+          <h5 class="mb-1">{{ staff_count }}</h5>
+          <p class="mb-0">Active Staff</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-warning rounded-3">
+              <i class="ri-user-follow-line ri-24px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info mt-5">
+          <h5 class="mb-1">{{ pending_activation_count }}</h5>
+          <p class="mb-0">Pending Activation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-info rounded-3">
+              <i class="ri-book-open-line ri-24px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info mt-5">
+          <h5 class="mb-1">{{ class_level_count }}</h5>
+          <p class="mb-0">Classes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-6">
+  <div class="col-xxl-3 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="avatar">
+            <div class="avatar-initial bg-label-secondary rounded-3">
+              <i class="ri-layout-grid-line ri-24px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info mt-5">
+          <h5 class="mb-1">{{ section_count }}</h5>
+          <p class="mb-0">Sections</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-6 col-sm-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <p class="text-uppercase small text-muted mb-1">Current Academic Year</p>
+        {% if current_academic_year %}
+        <h5 class="mb-1">{{ current_academic_year.name }}</h5>
+        <p class="mb-0 text-muted">{{ current_academic_year.start_date }} – {{ current_academic_year.end_date }}</p>
+        {% else %}
+        <p class="mb-0 text-muted">No academic year has been marked as current yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

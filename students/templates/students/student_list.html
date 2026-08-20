@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Students{% endblock %}
+{% block page_title %}Students{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <h5 class="card-title mb-0">Students</h5>
+    <div class="d-flex gap-2">
+      <a href="{% url 'students:student_import' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="ri-file-excel-2-line me-1"></i>Import from Excel
+      </a>
+      <button type="button" hx-get="{% url 'students:student_create' %}" hx-target="#modal-root" hx-swap="innerHTML"
+              class="btn btn-primary btn-sm">
+        <i class="ri-add-line me-1"></i>Add student
+      </button>
+    </div>
+  </div>
+  <div id="object-list-container" hx-get="{{ request.path }}" hx-trigger="refresh-list from:body" hx-swap="innerHTML">
+    {% include "students/_student_table.html" %}
+  </div>
+</div>
+{% endblock %}
