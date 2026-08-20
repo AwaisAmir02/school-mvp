@@ -7,6 +7,8 @@ DEBUG = False
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
+DATABASES['default']['OPTIONS'] = {'sslmode': config('DB_SSLMODE', default='require')}
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SECURE_SSL_REDIRECT = True
