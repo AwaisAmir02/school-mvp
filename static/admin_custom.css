@@ -284,6 +284,8 @@ details[open] summary::after {
 
 nav[aria-labelledby="changelist-filter-header"] details ul {
   margin-top: 0.5rem;
+  max-height: 13rem;
+  overflow-y: auto;
 }
 
 nav[aria-labelledby="changelist-filter-header"] details ul li {
