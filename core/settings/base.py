@@ -9,7 +9,8 @@ SECRET_KEY = config('SECRET_KEY')
 SINGLE_SCHOOL_MODE = config('SINGLE_SCHOOL_MODE', default=False, cast=bool)
 
 INSTALLED_APPS = [
-    'common.admin.SchoolMVPAdminConfig',
+    'jazzmin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -28,6 +29,69 @@ INSTALLED_APPS = [
     'staff',
     'audit',
 ]
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'School MVP',
+    'site_header': 'School MVP',
+    'site_brand': 'School MVP',
+    'site_logo': 'icons/icon-192.png',
+    'login_logo': 'icons/icon-192.png',
+    'site_icon': 'icons/icon-192.png',
+    'welcome_sign': 'Welcome to the School MVP administration console',
+    'copyright': 'School MVP',
+    'search_model': ['schools.School', 'accounts.User'],
+    'show_sidebar': True,
+    'navigation_expanded': True,
+    'order_with_respect_to': [
+        'schools', 'accounts', 'academics', 'staff', 'students', 'audit', 'auth', 'django_celery_beat',
+    ],
+    'custom_links': {
+        'Materialize UI': [
+            {
+                'name': 'School Management (Materialize UI)',
+                'url': 'schools:school_list',
+                'icon': 'fas fa-th-large',
+            },
+        ],
+    },
+    'icons': {
+        'auth': 'fas fa-users-cog',
+        'auth.group': 'fas fa-users',
+        'schools': 'fas fa-building',
+        'schools.school': 'fas fa-school',
+        'accounts': 'fas fa-users-cog',
+        'accounts.user': 'fas fa-user',
+        'academics': 'fas fa-book-open',
+        'academics.academicyear': 'fas fa-calendar-alt',
+        'academics.classlevel': 'fas fa-layer-group',
+        'academics.section': 'fas fa-columns',
+        'academics.stream': 'fas fa-stream',
+        'staff': 'fas fa-chalkboard-teacher',
+        'staff.staff': 'fas fa-id-badge',
+        'students': 'fas fa-graduation-cap',
+        'students.student': 'fas fa-user-graduate',
+        'audit': 'fas fa-clipboard-list',
+        'audit.auditlog': 'fas fa-history',
+    },
+    'default_icon_parents': 'fas fa-chevron-circle-right',
+    'default_icon_children': 'fas fa-circle',
+}
+
+JAZZMIN_UI_TWEAKS = {
+    'theme': 'flatly',
+    'default_theme_mode': 'light',
+    'navbar': 'navbar-white navbar-light',
+    'sidebar': 'sidebar-dark-primary',
+    'accent': 'accent-primary',
+    'button_classes': {
+        'primary': 'btn-primary',
+        'secondary': 'btn-secondary',
+        'info': 'btn-info',
+        'warning': 'btn-warning',
+        'danger': 'btn-danger',
+        'success': 'btn-success',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

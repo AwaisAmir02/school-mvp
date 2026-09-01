@@ -8,10 +8,6 @@ from django.http import JsonResponse
 from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
 
-admin.site.site_header = 'School MVP Administration'
-admin.site.site_title = 'School MVP'
-admin.site.index_title = 'Site Administration'
-
 
 def debug_static_check(request):
     static_root = str(settings.STATIC_ROOT)
